@@ -1,0 +1,99 @@
+﻿@model List<TravelBookingApp.Models.TravelPackage>
+
+@{
+    ViewData["Title"] = "Accueil";
+    var featuredDestinations = ViewBag.FeaturedDestinations as List<TravelBookingApp.Models.Destination>;
+}
+
+<!-- 🔹 Bannière d'accueil -->
+<div class="hero-banner" style="
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1491349174775-aa992866c9fc?auto=format&fit=crop&w=1920');
+  height: 50vh;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;">
+    <div>
+        <h1 class="display-4 fw-bold">Découvrez le monde avec nous</h1>
+        <p class="lead">Des voyages exceptionnels au meilleur prix</p>
+
+        <!-- 🔹 Barre de recherche -->
+        <form asp-controller="Package" asp-action="Search" method="get" class="d-flex justify-content-center mt-3">
+            <input type="text" name="query" class="form-control me-2" placeholder="Rechercher une destination..." style="max-width: 400px;" />
+            <button type="submit" class="btn btn-light">🔍</button>
+        </form>
+    </div>
+</div>
+
+<!-- 🔹 Section : Nos offres populaires -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fw-bold">Nos offres populaires</h2>
+    <div class="row g-4">
+        @foreach (var package in Model)
+        {
+            <div class="col-md-4">
+                <div class="card package-card h-100 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+                    @if (!string.IsNullOrEmpty(package.ImageUrl))
+                    {
+                        <img src="@package.ImageUrl" class="card-img-top" alt="@package.Title" style="height: 200px; object-fit: cover;" />
+                    }
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@package.Title</h5>
+                        <p class="text-muted small">@package.Destination?.Name, @package.Destination?.Country</p>
+                        <p class="card-text flex-grow-1">@package.Description</p>
+                        <div class="mt-auto">
+                            <p class="fw-bold text-primary">@package.Price.ToString("C0") pour @package.Duration jour@(package.Duration > 1 ? "s" : "")</p>
+                            <a asp-controller="Package" asp-action="Details" asp-route-id="@package.Id" class="btn btn-primary w-100">Voir détails</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- 🔹 Section : Destinations phares -->
+@if (featuredDestinations != null && featuredDestinations.Any())
+{
+    <div class="container mt-5 mb-5">
+        <h2 class="text-center mb-4 fw-bold">Destinations phares</h2>
+        <div class="row justify-content-center g-4">
+            @foreach (var dest in featuredDestinations)
+            {
+                <div class="col-6 col-md-2 text-center">
+                    <div class="destination-item" data-aos="zoom-in">
+                        @if (!string.IsNullOrEmpty(dest.ImageUrl))
+                        {
+                            <img src="@dest.ImageUrl" class="rounded-circle mb-2" alt="@dest.Name"
+                                 style="width: 80px; height: 80px; object-fit: cover; border: 2px solid #ddd;" />
+                        }
+                        <p class="fw-bold mb-0">@dest.Name</p>
+                        <small class="text-muted">@dest.Country</small>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- 🔹 Pied de page -->
+<footer class="bg-dark text-light py-4 mt-5">
+    <div class="container text-center">
+        <p class="mb-1">📧 contact@travelbooking.ma</p>
+        <p class="mb-1">📞 +212 6 XX XX XX XX</p>
+        <p class="mb-0">📍 Casablanca, Maroc</p>
+        <hr class="my-3 opacity-25" />
+        <p class="mb-0">&copy; @DateTime.Now.Year TravelBookingApp – Tous droits réservés</p>
+    </div>
+</footer>
+
+<!-- 🔹 Styles CSS inline (ou déplacez-les dans site.css) -->
+<style>
+    .package-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+    }
+</style>
