@@ -2,7 +2,7 @@ C
 # 🧳 TravelBooking — Travel Booking Web Application
 
 > **Academic Project – Built with ASP.NET Core MVC & SQLite**  
-> Academic Year: 2024–2025  
+> Academic Year: 2025-2026  
 > Technologies: .NET 8, ASP.NET Core MVC, Entity Framework Core, SQLite, Bootstrap 5  
 > Duration: ~1 month  
 
